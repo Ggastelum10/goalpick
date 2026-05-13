@@ -1,0 +1,31 @@
+project_id = "wucmklmlexkkiskwmvqb"
+
+[functions.sync-matches]
+verify_jwt = false
+
+[functions.scrape-fifa-matches]
+verify_jwt = false
+
+[functions.create-league-payment]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.send-league-invite]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.send-daily-reminders]
+verify_jwt = false
+
+[functions.send-daily-summary]
+verify_jwt = false
+
+[functions.purchase-league-licenses]
+verify_jwt = false
+
+[functions.help-chat]
+verify_jwt = false

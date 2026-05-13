@@ -1,0 +1,2 @@
+ALTER TABLE public.legal_documents DROP CONSTRAINT legal_documents_document_type_version_key;
+ALTER TABLE public.legal_documents ADD CONSTRAINT legal_documents_document_type_version_language_key UNIQUE (document_type, version, language);

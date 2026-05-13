@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Dark background matching app background_color -->
+  <rect width="512" height="512" fill="#0f172a"/>
+  <!-- Logo centered with ~20% padding on all sides (logo fits in 410x410 centered in 512x512) -->
+  <image
+    href="/pwa-512x512.png"
+    x="51"
+    y="51"
+    width="410"
+    height="410"
+    preserveAspectRatio="xMidYMid meet"
+  />
+</svg>

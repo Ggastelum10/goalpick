@@ -1,0 +1,1 @@
+ALTER TABLE public.leagues ADD COLUMN IF NOT EXISTS show_prize_pool boolean NOT NULL DEFAULT true;

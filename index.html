@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#1e3a5f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="GOALPICK" />
+    <!--
+      Pre-paint theme script — applies the user's theme choice (or dark default)
+      before React mounts so the first paint never flashes the wrong theme.
+      See mem://design/theme-system-green-dark-first.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('theme');
+          // Brand defaults to dark; only 'light' opts out.
+          var isDark = stored !== 'light';
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          // localStorage may be blocked (Safari private mode, etc.) — fall back to dark.
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- iOS Splash Screens (portrait — iPhones) -->
+    <!-- iPhone 16 Pro Max (430x932 @3x → 1290x2796) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 16 Pro (402x874 @3x → 1206x2622) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 15 Pro Max / 14 Plus / 13 Pro Max (430x932 @3x → 1290x2796) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 15 / 14 Pro (393x852 @3x → 1179x2556) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 14 / 13 / 12 (390x844 @3x → 1170x2532) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 13 mini / 12 mini (375x812 @3x → 1125x2436) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 11 Pro Max / XS Max (414x896 @3x → 1242x2688) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 11 / XR (414x896 @2x → 828x1792) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone X / XS / 11 Pro (375x812 @3x → 1125x2436) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 8 Plus / 7 Plus / 6s Plus (414x736 @3x → 1242x2208) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone 8 / 7 / 6s / SE 2nd gen (375x667 @2x → 750x1334) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPhone SE 1st gen (320x568 @2x → 640x1136) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+
+    <!-- iOS Splash Screens (portrait — iPads) -->
+    <!-- iPad Pro 12.9" (1024x1366 @2x → 2048x2732) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPad Pro 11" / Air 4-5 (834x1194 @2x → 1668x2388) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPad Air 3 / iPad Pro 10.5" (834x1112 @2x → 1668x2224) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPad mini 6 (744x1133 @2x → 1488x2266) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+    <!-- iPad 9th gen (768x1024 @2x → 1536x2048) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/splash-1290x2796.png" />
+
+    <!-- iOS Splash Screens (landscape — iPads) -->
+    <!-- iPad Pro 12.9" landscape -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/splash-2048x1536.png" />
+    <!-- iPad Pro 11" / Air landscape -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/splash-2048x1536.png" />
+    <!-- iPad 9th gen landscape -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/splash-2048x1536.png" />
+    <title>GOALPICK - Football Predictions 2026</title>
+    <meta name="description" content="Join the ultimate football prediction platform. Compete with friends, earn points, and win prizes!" />
+    <meta name="author" content="GOALPICK" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <meta property="og:title" content="GOALPICK - Football Predictions 2026" />
+    <meta property="og:description" content="Join the ultimate football prediction platform. Compete with friends, earn points, and win prizes!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cup-corner-clash.lovable.app" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="GOALPICK - Football Predictions 2026" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@GOALPICK" />
+    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image:alt" content="GOALPICK - Football Predictions 2026" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

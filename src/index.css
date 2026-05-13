@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* GOALPICK Theme - Green (logo), Coral, Purple */
+    --background: 210 25% 97%;
+    --foreground: 220 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 10%;
+
+    /* Primary Green (matches logo) */
+    --primary: 145 75% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft gray for secondary */
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 220 25% 10%;
+
+    --muted: 210 20% 92%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Coral/Orange Accent */
+    --accent: 15 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 145 75% 38%;
+
+    --radius: 0.75rem;
+
+    /* Brand Purple */
+    --gp-purple: 270 60% 50%;
+    --gp-purple-foreground: 0 0% 100%;
+
+    /* Brand Green (logo) — kept under --gp-teal name for backward compatibility */
+    --gp-teal: 145 75% 38%;
+    --gp-teal-light: 145 60% 88%;
+    --gp-green: 145 75% 38%;
+    --gp-green-glow: 142 80% 50%;
+    --gp-green-deep: 150 70% 22%;
+
+    /* Brand Coral */
+    --gp-coral: 15 90% 55%;
+    --gp-coral-light: 15 90% 92%;
+    
+    /* Gold for achievements */
+    --gold: 45 100% 50%;
+    --gold-foreground: 30 50% 20%;
+    
+    /* Success/Points */
+    --success: 145 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    /* Gradients (logo-aligned) */
+    --gradient-brand: linear-gradient(135deg, hsl(142 80% 50%) 0%, hsl(145 75% 38%) 45%, hsl(15 90% 55%) 100%);
+    --gradient-header: linear-gradient(180deg, hsl(145 75% 38%) 0%, hsl(150 70% 22%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 25% 10%;
+    --sidebar-primary: 145 75% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 94%;
+    --sidebar-accent-foreground: 220 25% 10%;
+    --sidebar-border: 210 20% 88%;
+    --sidebar-ring: 145 75% 38%;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 142 75% 50%;
+    --primary-foreground: 220 25% 8%;
+
+    --secondary: 220 25% 18%;
+    --secondary-foreground: 210 20% 95%;
+
+    --muted: 220 25% 18%;
+    --muted-foreground: 210 15% 55%;
+
+    --accent: 15 85% 58%;
+    --accent-foreground: 220 25% 8%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 25% 20%;
+    --input: 220 25% 20%;
+    --ring: 142 75% 50%;
+
+    --gp-purple: 270 55% 60%;
+    --gp-teal: 142 75% 50%;
+    --gp-teal-light: 145 40% 22%;
+    --gp-green: 142 75% 50%;
+    --gp-green-glow: 140 85% 60%;
+    --gp-green-deep: 150 65% 18%;
+    --gp-coral: 15 85% 58%;
+    --gp-coral-light: 15 70% 20%;
+    --gold: 45 95% 55%;
+    --success: 142 65% 52%;
+
+    /* Dark-mode tuned gradients for richer logo feel */
+    --gradient-brand: linear-gradient(135deg, hsl(140 85% 55%) 0%, hsl(145 75% 42%) 50%, hsl(15 85% 58%) 100%);
+    --gradient-header: linear-gradient(180deg, hsl(145 75% 30%) 0%, hsl(150 65% 14%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 25% 12%) 0%, hsl(220 25% 8%) 100%);
+
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 142 75% 50%;
+    --sidebar-primary-foreground: 220 25% 8%;
+    --sidebar-accent: 220 25% 18%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 220 25% 20%;
+    --sidebar-ring: 142 75% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.02em;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar utility */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .gradient-brand {
+    background: var(--gradient-brand);
+  }
+  
+  .gradient-header {
+    background: var(--gradient-header);
+  }
+  
+  .text-gradient-brand {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Sports-app style headline: punchy green → lime gradient with glow */
+  .text-headline-sport {
+    background: linear-gradient(
+      100deg,
+      hsl(142 80% 45%) 0%,
+      hsl(150 85% 55%) 45%,
+      hsl(80 90% 60%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 24px hsl(142 80% 50% / 0.25);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .dark .text-headline-sport {
+    background: linear-gradient(
+      100deg,
+      hsl(140 90% 55%) 0%,
+      hsl(150 95% 65%) 45%,
+      hsl(75 95% 65%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 28px hsl(142 90% 55% / 0.45);
+  }
+  
+  .glass {
+    backdrop-filter: blur(12px);
+    background: hsl(var(--card) / 0.8);
+  }
+  
+  .glass-dark {
+    backdrop-filter: blur(16px);
+    background: hsl(var(--background) / 0.6);
+  }
+  
+  .shadow-glow {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.3);
+  }
+  
+  .shadow-glow-accent {
+    box-shadow: 0 0 30px hsl(var(--accent) / 0.3);
+  }
+  
+  .shadow-card {
+    box-shadow: 0 4px 20px hsl(220 25% 10% / 0.08);
+  }
+  
+  .shadow-card-hover {
+    box-shadow: 0 8px 30px hsl(220 25% 10% / 0.12);
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-confetti {
+    animation: confetti 1s ease-out forwards;
+  }
+  
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.1) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .animate-glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+
+  /* Live indicator */
+  .live-pulse {
+    position: relative;
+  }
+  
+  .live-pulse::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid hsl(var(--destructive));
+    animation: live-ring 1.5s ease-out infinite;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Podium glow for top 3 */
+  .podium-gold {
+    box-shadow: 0 0 30px hsl(var(--gold) / 0.4), inset 0 1px 0 hsl(var(--gold) / 0.2);
+  }
+  
+  .podium-silver {
+    box-shadow: 0 0 25px hsl(210 10% 60% / 0.3);
+  }
+  
+  .podium-bronze {
+    box-shadow: 0 0 20px hsl(25 50% 50% / 0.3);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes confetti {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.5) rotate(360deg); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 20px hsl(var(--primary) / 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 40px hsl(var(--primary) / 0.6); }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes live-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
