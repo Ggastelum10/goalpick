@@ -1,26 +1,12 @@
 workflows:
   ios-workflow:
     name: iOS Workflow
-    integrations:
-      app_store_connect: Codemagic
     environment:
       xcode: latest
       cocoapods: default
       groups:
         - goalpick
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: app.goalpick
     scripts:
-      - name: Diagnostic
-        script: |
-          echo "=== Testing app-store-connect access ==="
-          app-store-connect bundle-ids list || echo "Failed to list bundle ids"
-          echo "=== Bundle id done ==="
-          app-store-connect certificates list || echo "Failed to list certs"
-          echo "=== Certs done ==="
-          app-store-connect profiles list || echo "Failed to list profiles"
-          echo "=== Profiles done ==="
       - name: Install dependencies
         script: npm install
       - name: Build web assets
@@ -31,5 +17,42 @@ workflows:
         script: |
           cd ios/App
           pod install
-    artifacts:
-      - build/ios/ipa/*.ipa
+      - name: Set up signing
+        script: |
+          # Set up keychain
+          KEYCHAIN_PATH=$HOME/Library/Keychains/build.keychain-db
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings build.keychain
+          
+          # Decode and import certificate
+          echo "$CERT_P12_BASE64" | base64 --decode > /tmp/cert.p12
+          security import /tmp/cert.p12 -k build.keychain -P "" -A -t cert -f pkcs12
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
+          
+          # Decode and install provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Goalpick.mobileprovision
+          
+          # Verify
+          echo "=== Certificates in keychain ==="
+          security find-identity -v -p codesigning build.keychain
+          echo "=== Profiles installed ==="
+          ls ~/Library/MobileDevice/Provisioning\ Profiles/
+      - name: Build IPA
+        script: |
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" \
+            DEVELOPMENT_TEAM=UFU24UHH5V \
+            archive
+          
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist ios/App/ExportOp
