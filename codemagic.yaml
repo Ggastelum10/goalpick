@@ -4,6 +4,9 @@ workflows:
     environment:
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.goalpick
     scripts:
       - name: Install dependencies
         script: npm install
@@ -22,8 +25,10 @@ workflows:
             -scheme App \
             -configuration Release \
             -archivePath build/App.xcarchive \
+            CODE_SIGN_STYLE="Manual" \
             CODE_SIGN_IDENTITY="iPhone Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" \
+            PROVISIONING_PROFILE_SPECIFIER="goalpick-appstore" \
+            DEVELOPMENT_TEAM="UFU24UHH5V" \
             archive
       - name: Export IPA
         script: |
