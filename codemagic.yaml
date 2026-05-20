@@ -9,6 +9,8 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: app.goalpick
+        api_key_id: CV3DGHBN5Z
+        issuer_id: 04d62057-6941-42ac-9254-a218270d0781
     scripts:
       - name: Install dependencies
         script: npm install
