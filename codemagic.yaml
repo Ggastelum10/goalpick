@@ -4,6 +4,8 @@ workflows:
     environment:
       xcode: latest
       cocoapods: default
+      groups:
+        - goalpick
       ios_signing:
         distribution_type: app_store
         bundle_identifier: app.goalpick
