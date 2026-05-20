@@ -19,13 +19,13 @@ workflows:
           pod install
       - name: Set up signing
         script: |
-          security create-keychain -p "" build.keychain
+          security create-keychain -p "build" build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
+          security unlock-keychain -p "build" build.keychain
           security set-keychain-settings build.keychain
           echo "$CERT_P12_BASE64" | base64 --decode > /tmp/cert.p12
-          security import /tmp/cert.p12 -k build.keychain -P "" -A -t cert -f pkcs12
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" build.keychain
+          security import /tmp/cert.p12 -k build.keychain -P "goalpick" -A -t cert -f pkcs12
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "build" build.keychain
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Goalpick.mobileprovision
           echo "=== Certificates ==="
