@@ -1,11 +1,16 @@
 workflows:
   ios-workflow:
     name: iOS Workflow
+    integrations:
+      app_store_connect: Codemagic
     environment:
       xcode: latest
       cocoapods: default
       groups:
         - goalpick
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.goalpick
     scripts:
       - name: Install dependencies
         script: npm install
@@ -19,36 +24,20 @@ workflows:
           pod install
       - name: Set up signing
         script: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
-          echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
-          echo $CERTIFICATE_P12 | base64 --decode > /tmp/goalpick.p12
-          security create-keychain -p "" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
-          security import /tmp/goalpick.p12 -k build.keychain -P "" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          keychain initialize
+          app-store-connect fetch-signing-files app.goalpick \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
       - name: Build iOS
         script: |
-          xcodebuild \
-            -workspace ios/App/App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath build/App.xcarchive \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" \
-            DEVELOPMENT_TEAM=UFU24UHH5V \
-            archive
-      - name: Export IPA
-        script: |
-          xcodebuild -exportArchive \
-            -archivePath build/App.xcarchive \
-            -exportOptionsPlist ios/App/ExportOptions.plist \
-            -exportPath build/output
+          xcode-project build-ipa \
+            --workspace ios/App/App.xcworkspace \
+            --scheme App
     artifacts:
-      - build/output/*.ipa
+      - build/ios/ipa/*.ipa
     publishing:
       app_store_connect:
-        apple_id: gustavo.gastelum10@gmail.com
-        password: $APP_SPECIFIC_PASSWORD
+        auth: integration
         submit_to_testflight: false
