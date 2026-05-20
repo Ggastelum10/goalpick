@@ -22,6 +22,14 @@ workflows:
             -scheme App \
             -configuration Release \
             -archivePath build/App.xcarchive \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" \
             archive
+      - name: Export IPA
+        script: |
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist ios/App/ExportOptions.plist \
+            -exportPath build/output
     artifacts:
-      - build/App.xcarchive
+      - build/output/*.ipa
