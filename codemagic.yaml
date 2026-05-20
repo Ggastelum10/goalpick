@@ -25,11 +25,12 @@ workflows:
       - name: Set up signing
         script: |
           keychain initialize
-          app-store-connect fetch-signing-files app.goalpick \
+          app-store-connect fetch-signing-files "app.goalpick" \
             --type IOS_APP_STORE \
-            --create
+            --create \
+            --certificate-key=@env:APP_STORE_CONNECT_PRIVATE_KEY
           keychain add-certificates
-          xcode-project use-profiles --warn-only
+          xcode-project use-profiles
       - name: Build IPA
         script: |
           xcode-project build-ipa \
@@ -37,7 +38,6 @@ workflows:
             --scheme App
     artifacts:
       - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
         auth: integration
