@@ -25,9 +25,16 @@ workflows:
       - name: Set up signing
         script: |
           keychain initialize
+          app-store-connect bundle-ids register "Goalpick" \
+            --bundle-id "app.goalpick" \
+            --platform IOS || true
+          app-store-connect profiles create \
+            --bundle-id "app.goalpick" \
+            --type IOS_APP_STORE \
+            --certificate-key=@env:APP_STORE_CONNECT_PRIVATE_KEY \
+            --save
           app-store-connect fetch-signing-files "app.goalpick" \
             --type IOS_APP_STORE \
-            --create \
             --certificate-key=@env:APP_STORE_CONNECT_PRIVATE_KEY
           keychain add-certificates
           xcode-project use-profiles
