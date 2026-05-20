@@ -12,6 +12,15 @@ workflows:
         distribution_type: app_store
         bundle_identifier: app.goalpick
     scripts:
+      - name: Diagnostic
+        script: |
+          echo "=== Testing app-store-connect access ==="
+          app-store-connect bundle-ids list || echo "Failed to list bundle ids"
+          echo "=== Bundle id done ==="
+          app-store-connect certificates list || echo "Failed to list certs"
+          echo "=== Certs done ==="
+          app-store-connect profiles list || echo "Failed to list profiles"
+          echo "=== Profiles done ==="
       - name: Install dependencies
         script: npm install
       - name: Build web assets
@@ -22,23 +31,5 @@ workflows:
         script: |
           cd ios/App
           pod install
-      - name: Set up signing
-        script: |
-          keychain initialize
-          app-store-connect bundle-ids register "Goalpick" --bundle-id "app.goalpick" --platform IOS || true
-          app-store-connect certificates create --type IOS_DISTRIBUTION --save || true
-          app-store-connect profiles create --bundle-id "app.goalpick" --type IOS_APP_STORE --save
-          app-store-connect fetch-signing-files "app.goalpick" --type IOS_APP_STORE
-          keychain add-certificates
-          xcode-project use-profiles
-      - name: Build IPA
-        script: |
-          xcode-project build-ipa \
-            --workspace ios/App/App.xcworkspace \
-            --scheme App
     artifacts:
       - build/ios/ipa/*.ipa
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: false
