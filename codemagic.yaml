@@ -19,18 +19,22 @@ workflows:
           pod install
       - name: Set up signing
         script: |
-          security create-keychain -p "build" build.keychain
+          security create-keychain -p build build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p "build" build.keychain
-          security set-keychain-settings build.keychain
+          security unlock-keychain -p build build.keychain
           echo "$CERT_P12_BASE64" | base64 --decode > /tmp/cert.p12
-          security import /tmp/cert.p12 -k build.keychain -P "goalpick" -A -t cert -f pkcs12
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "build" build.keychain
+          security import /tmp/cert.p12 -k build.keychain -P goalpick -A -t cert -f pkcs12
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k build build.keychain
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Goalpick.mobileprovision
+      - name: Fix Pods signing
+        script: |
+          cd ios/App
+          sed -i "" "s/CODE_SIGNING_REQUIRED = YES;/CODE_SIGNING_REQUIRED = NO;/g" Pods/Pods.xcodeproj/project.pbxproj
+          sed -i "" "s/CODE_SIGNING_ALLOWED = YES;/CODE_SIGNING_ALLOWED = NO;/g" Pods/Pods.xcodeproj/project.pbxproj
       - name: Build IPA
         script: |
-          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive -allowProvisioningUpdates CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" DEVELOPMENT_TEAM=UFU24UHH5V "CODE_SIGN_IDENTITY[sdk=iphoneos*]=iPhone Distribution" archive
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" DEVELOPMENT_TEAM=UFU24UHH5V archive
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist ios/App/ExportOptions.plist -exportPath build/output
     artifacts:
       - build/output/*.ipa
