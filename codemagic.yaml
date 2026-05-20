@@ -21,18 +21,12 @@ workflows:
         script: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
-          echo $CERTIFICATE_PEM | base64 --decode > /tmp/goalpick.pem
-          echo $CERTIFICATE_PRIVATE_KEY | base64 --decode > /tmp/goalpick.key
-          openssl pkcs12 -export \
-            -inkey /tmp/goalpick.key \
-            -in /tmp/goalpick.pem \
-            -out /tmp/goalpick.p12 \
-            -passout pass:Goalpick2026
-          security create-keychain -p Goalpick2026 build.keychain
+          echo $CERTIFICATE_P12 | base64 --decode > /tmp/goalpick.p12
+          security create-keychain -p "" build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p Goalpick2026 build.keychain
-          security import /tmp/goalpick.p12 -k build.keychain -P Goalpick2026 -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k Goalpick2026 build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import /tmp/goalpick.p12 -k build.keychain -P "" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
       - name: Build iOS
         script: |
           xcodebuild \
