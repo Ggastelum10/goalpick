@@ -17,17 +17,15 @@ workflows:
         script: |
           cd ios/App
           pod install
-      - name: Set up provisioning profile
+      - name: Set up signing
         script: |
-          echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
-      - name: Set up certificate
-        script: |
+          echo $CERTIFICATE_PEM | base64 --decode > /tmp/goalpick.pem
           echo $CERTIFICATE_PRIVATE_KEY | base64 --decode > /tmp/goalpick.key
           openssl pkcs12 -export \
             -inkey /tmp/goalpick.key \
-            -in ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision \
+            -in /tmp/goalpick.pem \
             -out /tmp/goalpick.p12 \
             -passout pass:Goalpick2026
           security create-keychain -p Goalpick2026 build.keychain
