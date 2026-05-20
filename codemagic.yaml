@@ -27,11 +27,6 @@ workflows:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k build build.keychain
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Goalpick.mobileprovision
-      - name: Fix Pods signing
-        script: |
-          cd ios/App
-          sed -i "" "s/CODE_SIGNING_REQUIRED = YES;/CODE_SIGNING_REQUIRED = NO;/g" Pods/Pods.xcodeproj/project.pbxproj
-          sed -i "" "s/CODE_SIGNING_ALLOWED = YES;/CODE_SIGNING_ALLOWED = NO;/g" Pods/Pods.xcodeproj/project.pbxproj
       - name: Build IPA
         script: |
           xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" DEVELOPMENT_TEAM=UFU24UHH5V archive
