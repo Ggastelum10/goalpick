@@ -28,13 +28,9 @@ workflows:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "build" build.keychain
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "$PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Goalpick.mobileprovision
-          echo "=== Certificates ==="
-          security find-identity -v -p codesigning build.keychain
-          echo "=== Profiles ==="
-          ls ~/Library/MobileDevice/Provisioning\ Profiles/
       - name: Build IPA
         script: |
-          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" DEVELOPMENT_TEAM=UFU24UHH5V archive
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath build/App.xcarchive -allowProvisioningUpdates CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="iPhone Distribution" PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" DEVELOPMENT_TEAM=UFU24UHH5V "CODE_SIGN_IDENTITY[sdk=iphoneos*]=iPhone Distribution" archive
           xcodebuild -exportArchive -archivePath build/App.xcarchive -exportOptionsPlist ios/App/ExportOptions.plist -exportPath build/output
     artifacts:
       - build/output/*.ipa
