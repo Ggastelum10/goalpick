@@ -6,9 +6,6 @@ workflows:
       cocoapods: default
       groups:
         - goalpick
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: app.goalpick
     scripts:
       - name: Install dependencies
         script: npm install
@@ -20,6 +17,24 @@ workflows:
         script: |
           cd ios/App
           pod install
+      - name: Set up provisioning profile
+        script: |
+          echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo $PROVISIONING_PROFILE | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision
+      - name: Set up certificate
+        script: |
+          echo $CERTIFICATE_PRIVATE_KEY | base64 --decode > /tmp/goalpick.key
+          openssl pkcs12 -export \
+            -inkey /tmp/goalpick.key \
+            -in ~/Library/MobileDevice/Provisioning\ Profiles/goalpick.mobileprovision \
+            -out /tmp/goalpick.p12 \
+            -passout pass:Goalpick2026
+          security create-keychain -p Goalpick2026 build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p Goalpick2026 build.keychain
+          security import /tmp/goalpick.p12 -k build.keychain -P Goalpick2026 -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k Goalpick2026 build.keychain
       - name: Build iOS
         script: |
           xcodebuild \
@@ -27,6 +42,10 @@ workflows:
             -scheme App \
             -configuration Release \
             -archivePath build/App.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="Goalpick AppStore" \
+            DEVELOPMENT_TEAM=UFU24UHH5V \
             archive
       - name: Export IPA
         script: |
